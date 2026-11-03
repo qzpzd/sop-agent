@@ -1,0 +1,56 @@
+# 档位 C（CPU）+ Ollama 默认配置
+# 无 GPU：关闭 VL，依赖旁白 + 关键帧路径由 LLM 整理粗 SOP
+
+inference:
+  provider: ollama
+  base_url: http://127.0.0.1:11434/v1
+  api_key: ollama
+
+pipeline:
+  asr:
+    # 档位 C：默认 faster_whisper（pip 即可，无需 whisper-cli）
+    backend: faster_whisper
+    model_size: base
+    model_path: data/models/whisper/ggml-base-q5_0.bin
+    language: zh
+    threads: 4
+    device: cpu
+    compute_type: int8
+  keyframes:
+    # CPU 档降低抽帧密度，减轻后续处理
+    min_scene_len_sec: 2.0
+    hist_threshold: 0.5
+    max_frames_per_min: 6
+    fallback_interval_sec: 8.0
+  vl:
+    enabled: false
+    base_url: http://127.0.0.1:11434/v1
+    api_key: ollama
+    # 若日后加轻量 VL，可改为 true 并 pull 对应模型
+    model: qwen2.5-vl:3b
+    max_scenes: 40
+    batch_size: 1
+    temperature: 0.1
+  llm:
+    base_url: http://127.0.0.1:11434/v1
+    api_key: ollama
+    # 本机已有模型；若改用 qwen2.5:3b-instruct 请先 ollama pull
+    model: qwen3:8b
+    temperature: 0.2
+    max_retries: 2
+  retrieval:
+    enabled: false
+    index_dir: data/index
+    text_model: data/models/bge-m3
+
+export:
+  formats:
+    - json
+    - markdown
+
+storage:
+  root: storage/jobs
+  sqlite_path: storage/jobs.db
+
+logging:
+  level: INFO

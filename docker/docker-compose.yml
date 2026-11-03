@@ -1,0 +1,15 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../storage:/app/storage
+      - ../data:/app/data
+      - ../configs:/app/configs
+    environment:
+      - SOP_VL_BASE_URL=http://host.docker.internal:11434/v1
+      - SOP_LLM_BASE_URL=http://host.docker.internal:11434/v1
+    # 推理服务建议宿主机跑 Ollama/vLLM，容器只跑 API+管线

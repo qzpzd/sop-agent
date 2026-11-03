@@ -1,0 +1,26 @@
+# Whisper / VL / LLM 权重目录（勿提交）
+data/models/
+data/index/
+
+# 任务产物
+storage/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+dist/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# 本地密钥
+.env
+*.pem

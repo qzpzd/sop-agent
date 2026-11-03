@@ -1,0 +1,26 @@
+# 模型路径与推理档位（与 default.yaml 配合）
+# tier: A=4090 24GB | B=16GB | C=CPU
+# 当前确认：档位 C + Ollama
+
+active_tier: C
+inference_provider: ollama
+
+tiers:
+  A:
+    whisper: data/models/whisper/ggml-large-v3-q5_0.bin
+    vl_enabled: true
+    vl_model: qwen2.5-vl:7b
+    llm_model: qwen2.5:14b-instruct
+    notes: "GPU 24GB；可用 vLLM/Ollama"
+  B:
+    whisper: data/models/whisper/ggml-medium-q5_0.bin
+    vl_enabled: true
+    vl_model: qwen2.5-vl:7b
+    llm_model: qwen2.5:7b-instruct
+    notes: "GPU 16GB；Ollama INT4/量化"
+  C:
+    whisper: data/models/whisper/ggml-base-q5_0.bin
+    vl_enabled: false
+    vl_model: null
+    llm_model: qwen3:8b
+    notes: "CPU：关 VL；优先用本机已有 Ollama 模型（如 qwen3:8b）"
